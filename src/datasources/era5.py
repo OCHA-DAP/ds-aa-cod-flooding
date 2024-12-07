@@ -4,16 +4,18 @@ from src.constants import ISO3
 from src.utils import db_utils
 
 
-def load_era5(verbose: bool = False):
+def load_era5(verbose: bool = False, adm_level: int = 1):
     engine = db_utils.get_engine()
     query = f"""
     SELECT *
     FROM public.era5
-    WHERE iso3 = {ISO3.upper()}
-    AND admin_level = 1
+    WHERE iso3 = '{ISO3.upper()}'
+    AND adm_level = {adm_level}
+    ORDER BY valid_date, pcode
     """
     if verbose:
         print(query)
     df = pd.read_sql(query, engine, parse_dates=["valid_date"])
     df["iso3"] = df["iso3"].str.lower()
+    df = df.rename(columns={"pcode": f"ADM{adm_level}_PCODE"})
     return df
