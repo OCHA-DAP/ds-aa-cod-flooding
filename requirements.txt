@@ -1,0 +1,5 @@
+azure-storage-blob==12.24.0
+geopandas==1.0.1
+rioxarray==0.18.1
+requests==2.32.3
+sqlalchemy==2.0.36
