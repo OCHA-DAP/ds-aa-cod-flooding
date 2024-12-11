@@ -226,6 +226,27 @@ plot_exposure(dff_aoi)
 ```
 
 ```python
+for zone in ZONES:
+    dff_zone = yearly_max_df[
+        yearly_max_df["ADM1_PCODE"].isin(zone.get("pcodes"))
+    ].copy()
+    dff_zone_grouped = (
+        dff_zone.groupby(["floodseason", "floodseason_str"])["roll7"]
+        .sum()
+        .reset_index()
+    )
+    names = dff_zone["ADM1_FR"].unique()
+    dff_zone_grouped["ADM1_FR"] = (
+        f'Zone {zone.get("number")} ({", ".join(names)})'
+    )
+    plot_exposure(dff_zone_grouped)
+```
+
+```python
+dff_zone_grouped["ADM1_FR"]
+```
+
+```python
 plot_exposure(yearly_max_df[yearly_max_df["ADM1_PCODE"] == KINSHASA1])
 ```
 
